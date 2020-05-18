@@ -1,0 +1,126 @@
+﻿@model MRT.Models.Route
+
+@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container">
+        <h3> Checkout </h3>
+
+        @using (Html.BeginForm("thanks", "Home"))
+        {
+            <table>
+                <tr>
+                    <td> Name </td>
+                    <td> : @Model.Name </td>
+                </tr>
+
+                <tr>
+                    <td> NRIC / Passport No </td>
+                    <td> : @Model.idNo </td>
+                </tr>
+
+                <tr>
+                    <td> Email </td>
+                    <td> : @Model.Email </td>
+                </tr>
+
+                <tr>
+                    <td> Trip type </td>
+                    <td> : @Model.tripType </td>
+                </tr>
+
+                <tr>
+                    <td> Station From </td>
+                    <td> : @ViewBag.StationFrom </td>
+                </tr>
+
+                <tr>
+                    <td> Station To </td>
+                    <td> : @ViewBag.StationTo </td>
+                </tr>
+
+                <tr>
+                    <td> Number of pax </td>
+                    <td> : @ViewBag.NumOfTicket person</td>
+                </tr>
+
+                <tr>
+                    <td> Discount Rate </td>
+                    <td> : @ViewBag.Category %</td>
+                </tr>
+
+                <tr>
+                    <td> Date purchase </td>
+                    <td> : @ViewBag.DateTime </td>
+                </tr>
+
+                <tr>
+                    <td> Total Price  </td>
+                    <td> : @ViewBag.Charge.ToString("RM 0.00") </td>
+                </tr>
+
+            </table>
+
+            try
+            {
+                WebMail.SmtpServer = "servername";
+                WebMail.SmtpPort = 123;
+                WebMail.EnableSsl = true;
+                WebMail.UserName = "your email";
+                WebMail.Password = "password";
+                WebMail.From = "your email";
+                WebMail.Send(Model.Email, "MRT Online Ticket Purchase Notification",
+                "<h2> Your Purchase Details </h2> </br>" +
+                "<table border='1'> " +
+                    "<tr> " +
+                        "<td> Name </td><td> " + Model.Name + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> NRIC / Passport No </td><td> " + Model.idNo + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> Email </td><td> " + Model.Email + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> Trip Type </td><td> " + ViewBag.Trip + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> From </td><td> " + ViewBag.StationFrom + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> To </td><td> " + ViewBag.StationTo + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> Number of Tickets </td><td> " + Model.NumTicket + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> Date and Time Purchase </td><td> " + ViewBag.DateTime + "</td>" +
+                    "</tr> " +
+
+                    "<tr> " +
+                        "<td> Total Price </td><td> " + ViewBag.Charge.ToString("RM 0.00") + "</td>" +
+                    "</tr> " +
+                "</table>");
+
+                @:<h3>@Model.Name,Purchasing are now complete </h3>
+            }
+            catch (Exception)
+            {
+                @:<b>Sorry, email unable to be send.</b>
+            }
+
+            <br /><br />
+            <input type="submit" value="Confirm" class="btn btn-primary" />
+        }
+        </div>
+
+
